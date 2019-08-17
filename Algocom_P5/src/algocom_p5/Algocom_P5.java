@@ -41,7 +41,9 @@ public class Algocom_P5 {
         newTable = mMult(matrixList, matrixList.size());
 
         printOrder(1, matrixList.size() - 1, newTable, matrixName);
-	}
+        System.out.println(" ");
+	
+        }
 	
 	private static void printOrder(int x, int y, int[][] newTable, String[] matrixName) {
 		
@@ -55,7 +57,7 @@ public class Algocom_P5 {
 			printOrder(newTable[x][y] + 1, y, newTable, matrixName);
 			System.out.print(")");
                      }
-	}
+            	}
 
 
 	private static int[][] mMult(ArrayList<Integer> matrixList, int n) {
@@ -178,7 +180,7 @@ public class Algocom_P5 {
 		}
 
 		spend = backTracking(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
-		System.out.print(spend + " " + fun[row - 1][col - 1]);
+		System.out.println(spend + " " + fun[row - 1][col - 1]);
 	}
 	
 //3
@@ -230,36 +232,23 @@ public class Algocom_P5 {
     public static void main(String[] args) {
         // TODO code application logic here
         
-//        	String[] input = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
-//		assignTable(input);
+//        	String[] Ainput1 = {"3", "A 10 30", "B 30 5", "C 5 60"};
+//		assignTable(Ainput1);
 //		
-//		System.out.println();
-				
-//		String[] s2 = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
-//		assignTable(s2);
-//		
-//		System.out.println();
-//		System.out.println();
+//		String[] Ainput2 = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
+//		assignTable(Ainput2);
 //				
-//		String[] pb = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
-//		partyBudget(pb);
+//		String[] Binput1 = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
+//		partyBudget(Binput1);
 //		
-//		System.out.println();
-//			    
-//		String[] pb2 = {"50 10", "13 8", "19 10", "16 8", "12 9", "10 2", "12 8", "13 5", "15 5", "11 7", "16 2"}; 
-//		partyBudget(pb2);
+//		String[] Binput2 = {"50 10", "13 8", "19 10", "16 8", "12 9", "10 2", "12 8", "13 5", "15 5", "11 7", "16 2"}; 
+//		partyBudget(Binput2);
 //		
-//		System.out.println();
-//		System.out.println();
+//		int[] Cinput1 = {25, 50, 75};
+//		cut(100, Cinput1.length, Cinput1);
 //				
-		int[] c = {25, 50, 75};
-		cut(100, c.length, c);
-//		
-//		System.out.println();
-//		
-//		int[] c2 = {4, 5, 7, 8};
-//		cut(10, c2.length, c2);
-//	
+//		int[] Cinput2 = {4, 5, 7, 8};
+//		cut(10, Cinput2.length, Cinput2);
     }
     
 }
