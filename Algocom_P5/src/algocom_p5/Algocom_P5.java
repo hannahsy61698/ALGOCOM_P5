@@ -23,7 +23,7 @@ public class Algocom_P5 {
 	ArrayList<Integer> matrixDimList = new ArrayList<Integer>();
         int numMatrix = Integer.parseInt(input[0]);
         String[] matrixName = new String[numMatrix];
-        int[][] tableForPrinting;
+        int[][] newTable;
         int i = 0;
         
         while(i<numMatrix)
@@ -37,14 +37,13 @@ public class Algocom_P5 {
         	matrixDimList.add(Integer.parseInt(split[2]));
                 i++;
         }
-        //Compute
-        tableForPrinting = matrixChainMultiplication(matrixDimList, matrixDimList.size());
+        
+        newTable = matrixChainMultiplication(matrixDimList, matrixDimList.size());
 
-        //Print
-        printMatrixChainMultOrder(1, matrixDimList.size() - 1, tableForPrinting, matrixName);
+        printOrder(1, matrixDimList.size() - 1, newTable, matrixName);
 	}
 	
-	private static void printMatrixChainMultOrder(int x, int y, int[][] tableForPrinting, String[] matrixName) {
+	private static void printOrder(int x, int y, int[][] tableForPrinting, String[] matrixName) {
 		
 		if(x == y) {
 			System.out.print(matrixName[x-1]);
@@ -52,8 +51,8 @@ public class Algocom_P5 {
 		
 		else {
 			System.out.print("("); 
-			printMatrixChainMultOrder(x, tableForPrinting[x][y], tableForPrinting, matrixName);
-			printMatrixChainMultOrder(tableForPrinting[x][y] + 1, y, tableForPrinting, matrixName);
+			printOrder(x, tableForPrinting[x][y], tableForPrinting, matrixName);
+			printOrder(tableForPrinting[x][y] + 1, y, tableForPrinting, matrixName);
 			System.out.print(")");
                      }
 	}
