@@ -25,26 +25,16 @@ public class Algocom_P5 {
         String[] matrixName = new String[numMatrix];
         int[][] tableForPrinting;
         int i = 0;
-//        
-//        for(int i = 0; i < numMatrix; i++) {
-//        	String[] inputSplitted = input[i+1].split(" ");
-//        	matrixName[i] = inputSplitted[0];
-//        	
-//        	if(i == 0) 
-//        		matrixDimList.add(Integer.parseInt(inputSplitted[1]));
-//        		
-//        	matrixDimList.add(Integer.parseInt(inputSplitted[2]));
-//        }
-//        
+        
         while(i<numMatrix)
         {
-            String[] inputSplitted = input[i+1].split(" ");
-        	matrixName[i] = inputSplitted[0];
+            String[] split = input[i+1].split(" ");
+        	matrixName[i] = split[0];
         	
         	if(i == 0) 
-        		matrixDimList.add(Integer.parseInt(inputSplitted[1]));
+                    matrixDimList.add(Integer.parseInt(split[1]));
         		
-        	matrixDimList.add(Integer.parseInt(inputSplitted[2]));
+        	matrixDimList.add(Integer.parseInt(split[2]));
                 i++;
         }
         //Compute
@@ -71,25 +61,27 @@ public class Algocom_P5 {
 
 	private static int[][] matrixChainMultiplication(ArrayList<Integer> matrixDimList, int n) {
 		
-		int[][] tableM = new int[n][n]; //Table that will keep track of the minimum for DP.
-		int[][] tableS = new int[n][n]; //Table that will tell us what is the order.
+		int[][] tableM = new int[n][n]; 
+		int[][] tableS = new int[n][n]; 
                 int k =0;
 		
-		//If one matrix, it means there are no multiplication cost.
 		for(int i = 1; i < n; i++) {
 			tableM[i][i] = 0;
 		}
 		
-		for(int subLen = 2; subLen < n; subLen++) { 
-			
-			for(int x = 1; x < n - subLen + 1; x++) {
+                int subLen = 2;
+                        
+		while(subLen< n){ 
+			int x=1;
+			while(x<n-subLen+1)
+                        {
 				int y = x + subLen - 1;
 				
 				if(y != n) {
 					
 					tableM[x][y] = Integer.MAX_VALUE;
 					
-                                        k=x;
+                                        k = x;
                                         while(k<y)
                                         {
                                             int cost = tableM[x][k] + tableM[k + 1][y] + matrixDimList.get(x - 1) * matrixDimList.get(k) * matrixDimList.get(y);
@@ -102,7 +94,9 @@ public class Algocom_P5 {
                                        }
                                       
                                     }
+                                x++;
 				}
+                        subLen++;
 			}
 		
 		
@@ -232,8 +226,8 @@ public class Algocom_P5 {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        	String[] s = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
-		assignTable(s);
+        	String[] input = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
+		assignTable(input);
 		
 		System.out.println();
 				
