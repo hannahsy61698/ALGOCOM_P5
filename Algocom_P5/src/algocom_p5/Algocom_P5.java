@@ -20,30 +20,30 @@ public class Algocom_P5 {
     //1
 	public static void assignTable(String[] input) {
             
-	ArrayList<Integer> matrixDimList = new ArrayList<Integer>();
-        int numMatrix = Integer.parseInt(input[0]);
-        String[] matrixName = new String[numMatrix];
+	ArrayList<Integer> matrixList = new ArrayList<Integer>();
+        int num = Integer.parseInt(input[0]);
+        String[] matrixName = new String[num];
         int[][] newTable;
         int i = 0;
         
-        while(i<numMatrix)
+        while(i<num)
         {
             String[] split = input[i+1].split(" ");
         	matrixName[i] = split[0];
         	
         	if(i == 0) 
-                    matrixDimList.add(Integer.parseInt(split[1]));
+                    matrixList.add(Integer.parseInt(split[1]));
         		
-        	matrixDimList.add(Integer.parseInt(split[2]));
+        	matrixList.add(Integer.parseInt(split[2]));
                 i++;
         }
         
-        newTable = matrixChainMultiplication(matrixDimList, matrixDimList.size());
+        newTable = mMult(matrixList, matrixList.size());
 
-        printOrder(1, matrixDimList.size() - 1, newTable, matrixName);
+        printOrder(1, matrixList.size() - 1, newTable, matrixName);
 	}
 	
-	private static void printOrder(int x, int y, int[][] tableForPrinting, String[] matrixName) {
+	private static void printOrder(int x, int y, int[][] newTable, String[] matrixName) {
 		
 		if(x == y) {
 			System.out.print(matrixName[x-1]);
@@ -51,14 +51,14 @@ public class Algocom_P5 {
 		
 		else {
 			System.out.print("("); 
-			printOrder(x, tableForPrinting[x][y], tableForPrinting, matrixName);
-			printOrder(tableForPrinting[x][y] + 1, y, tableForPrinting, matrixName);
+			printOrder(x, newTable[x][y], newTable, matrixName);
+			printOrder(newTable[x][y] + 1, y, newTable, matrixName);
 			System.out.print(")");
                      }
 	}
 
 
-	private static int[][] matrixChainMultiplication(ArrayList<Integer> matrixDimList, int n) {
+	private static int[][] mMult(ArrayList<Integer> matrixList, int n) {
 		
 		int[][] M = new int[n][n]; 
 		int[][] S = new int[n][n]; 
@@ -83,7 +83,7 @@ public class Algocom_P5 {
                                         k = x;
                                         while(k<y)
                                         {
-                                            int cost = M[x][k] + M[k + 1][y] + matrixDimList.get(x - 1) * matrixDimList.get(k) * matrixDimList.get(y);
+                                            int cost = M[x][k] + M[k + 1][y] + matrixList.get(x - 1) * matrixList.get(k) * matrixList.get(y);
 						
                                             if(cost < M[x][y]) {
 						M[x][y] = cost;
@@ -156,8 +156,6 @@ public class Algocom_P5 {
                 int y=1;
                 int z;
                 
-		//int b, d;
-		
 		while(x < n) {
 			temp = inputs[x + 1].split(" ");
 			partyList.add(new party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
@@ -165,7 +163,6 @@ public class Algocom_P5 {
 			x++;
 		}
 		
-		//for(y = 1; y < row; y++) {
                 while(y<row){
 			for(z = 1; z < col; z++) {
 				w = z - partyList.get(y - 1).getFee();
