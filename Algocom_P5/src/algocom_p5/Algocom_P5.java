@@ -18,216 +18,205 @@ public class Algocom_P5 {
      */
     
     //1
-	public static void assignTable(String[] input) {
-            
-	ArrayList<Integer> matrixList = new ArrayList<Integer>();
-        int num = Integer.parseInt(input[0]);
-        String[] matrixName = new String[num];
-        int[][] newTable;
-        int i = 0;
-        
-        while(i<num)
-        {
-            String[] split = input[i+1].split(" ");
-        	matrixName[i] = split[0];
+public static void assignTable(String[] input) {
+    ArrayList<Integer> matrixList = new ArrayList<Integer>();
+    int num = Integer.parseInt(input[0]);
+    String[] matrixName = new String[num];
+    int[][] newTable;
+    int i = 0;
+    
+    while(i<num)
+    {
+        String[] split = input[i+1].split(" ");matrixName[i] = split[0];
         	
-        	if(i == 0) 
-                    matrixList.add(Integer.parseInt(split[1]));
-        		
-        	matrixList.add(Integer.parseInt(split[2]));
-                i++;
-        }
-        
-        newTable = mMult(matrixList, matrixList.size());
-
-        printOrder(1, matrixList.size() - 1, newTable, matrixName);
-        System.out.println(" ");
+        if(i == 0)
+            matrixList.add(Integer.parseInt(split[1]));
+        matrixList.add(Integer.parseInt(split[2]));
+        i++;
+    }
+    
+    newTable = mMult(matrixList, matrixList.size());
+    printOrder(1, matrixList.size() - 1, newTable, matrixName);
+    System.out.println(" ");
+}
 	
+private static void printOrder(int x, int y, int[][] newTable, String[] matrixName) {
+
+    if(x == y) 
+    {
+        System.out.print(matrixName[x-1]);
+    }
+    else 
+    {
+        System.out.print("(");
+        printOrder(x, newTable[x][y], newTable, matrixName);
+        printOrder(newTable[x][y] + 1, y, newTable, matrixName);
+	System.out.print(")");
+    }
+}
+
+private static int[][] mMult(ArrayList<Integer> matrixList, int n) {
+
+    int[][] M = new int[n][n]; 
+    int[][] S = new int[n][n]; 
+    int k =0;
+    for(int i = 1; i < n; i++) 
+    {
+        M[i][i] = 0;
+    }
+    int subLen = 2;
+    while(subLen< n){
+        int x=1;
+        while(x<n-subLen+1)
+        {
+            int y = x + subLen - 1;
+            if(y != n) {
+                M[x][y] = Integer.MAX_VALUE;
+		k = x;
+                while(k<y)
+                {
+                    int cost = M[x][k] + M[k + 1][y] + matrixList.get(x - 1) * matrixList.get(k) * matrixList.get(y);
+                    if(cost < M[x][y]) 
+                    {
+                        M[x][y] = cost;
+                        S[x][y] = k; 
+                    }
+                    k++;
+                }
+            }
+            x++;
         }
-	
-	private static void printOrder(int x, int y, int[][] newTable, String[] matrixName) {
-		
-		if(x == y) {
-			System.out.print(matrixName[x-1]);
-		}
-		
-		else {
-			System.out.print("("); 
-			printOrder(x, newTable[x][y], newTable, matrixName);
-			printOrder(newTable[x][y] + 1, y, newTable, matrixName);
-			System.out.print(")");
-                     }
-            	}
-
-
-	private static int[][] mMult(ArrayList<Integer> matrixList, int n) {
-		
-		int[][] M = new int[n][n]; 
-		int[][] S = new int[n][n]; 
-                int k =0;
-		
-		for(int i = 1; i < n; i++) {
-			M[i][i] = 0;
-		}
-		
-                int subLen = 2;
-                        
-		while(subLen< n){ 
-			int x=1;
-			while(x<n-subLen+1)
-                        {
-				int y = x + subLen - 1;
-				
-				if(y != n) {
-					
-					M[x][y] = Integer.MAX_VALUE;
-					
-                                        k = x;
-                                        while(k<y)
-                                        {
-                                            int cost = M[x][k] + M[k + 1][y] + matrixList.get(x - 1) * matrixList.get(k) * matrixList.get(y);
-						
-                                            if(cost < M[x][y]) {
-						M[x][y] = cost;
-						S[x][y] = k; 
-					         }
-                                        k++;
-                                       }
-                                      
-                                    }
-                                x++;
-				}
-                        subLen++;
-			}
-		
-		
-		return S;
-	}
+        subLen++;
+    }
+    return S;
+}
 
 // 2
-	private static class party {
-		private int fee; 
-		private int fun; 
-		
-		public party(int e, int f) {
-		    fee = e;
-		    fun = f;
-		}
-		
-		public int getFee() {
-			return fee;
-		}
-		
-		public int getFun() {
-			return fun;
-		}
-	}
-	
-	private static int backTracking(int row, int col, int[][] pa, int fun, ArrayList<party> pl) {
-		int spend = 0;
-		
-		while(row > 0 && fun > 0) {
-			if(fun > 0) {
-				if (pa[row - 1][col] != fun) {
-					fun -= pl.get(row - 1).getFun();
-					spend += pl.get(row - 1).getFee();
-					col -= pl.get(row - 1).getFee();
-				}
-			}
-			row--;
-		}
-		return spend;
-	}
-	
-	public static void partyBudget(String[] inputs) {
-		ArrayList<party> partyList = new ArrayList<party>();
-		
-		String[] temp = inputs[0].split(" ");
-		
-		int budget = Integer.parseInt(temp[0]);
-		int n = Integer.parseInt(temp[1]);
-		
-		int row = n + 1;
-		int col = budget + 1;
-		int w;
-		int spend;
-		
-		int[][] fun = new int[row][col];
-				
-		int x=0;
-                int y=1;
-                int z;
-                
-		while(x < n) {
-			temp = inputs[x + 1].split(" ");
-			partyList.add(new party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
-			
-			x++;
-		}
-		
-                while(y<row){
-			for(z = 1; z < col; z++) {
-				w = z - partyList.get(y - 1).getFee();
-				
-				if(w > 0) {
-					fun[y][z] = Math.max(fun[y - 1][z], fun[y - 1][w] + partyList.get(y - 1).getFun());
-				}
-                                else{
-					fun[y][z] = fun[y - 1][z];
-				}
-			}
-                        y++;
-		}
+private static class party {
+    private int fee; 
+    private int fun; 
 
-		spend = backTracking(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
-		System.out.println(spend + " " + fun[row - 1][col - 1]);
-	}
+    public party(int e, int f) 
+    {
+        fee = e;
+        fun = f;
+    }
+
+    public int getFee() 
+    {
+        return fee;
+    }
+    public int getFun() {
+        return fun;
+    }
+}
+
+private static int backTracking(int row, int col, int[][] pa, int fun, ArrayList<party> pl) 
+{
+    int spend = 0;
+    while(row > 0 && fun > 0) {
+        if(fun > 0) {
+            if (pa[row - 1][col] != fun) {
+                fun -= pl.get(row - 1).getFun();
+                spend += pl.get(row - 1).getFee();
+                col -= pl.get(row - 1).getFee();
+            }
+        }
+        row--;
+    }
+    return spend;
+}
+
+public static void partyBudget(String[] inputs) 
+{
+    ArrayList<party> partyList = new ArrayList<party>();
+    String[] temp = inputs[0].split(" ");
+    
+    int budget = Integer.parseInt(temp[0]);
+    int n = Integer.parseInt(temp[1]);
+    int row = n + 1;
+    int col = budget + 1;
+    int w;
+    int spend;
+    int x=0;
+    int y=1;
+    int z;
+               
+    int[][] fun = new int[row][col];
+    
+    while(x < n) 
+    {
+        temp = inputs[x + 1].split(" ");
+        partyList.add(new party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
+        x++;
+    }
+    
+    while(y<row){
+        for(z = 1; z < col; z++) {
+            w = z - partyList.get(y - 1).getFee();
+            
+            if(w > 0) 
+            {
+                fun[y][z] = Math.max(fun[y - 1][z], fun[y - 1][w] + partyList.get(y - 1).getFun());
+            }
+            else
+            {
+                fun[y][z] = fun[y - 1][z];
+            }
+        }
+        y++;
+    }
+    spend = backTracking(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
+    System.out.println(spend + " " + fun[row - 1][col - 1]);
+}
 	
 //3
-	public static void cut(int l, int cuts, int[] places) {
-		int cut = cuts + 2;
-		int sum;
-		int index;
-		int right = 2;
-		int left;
+public static void cut(int l, int cuts, int[] places) {
+    int cut = cuts + 2;
+    int sum;
+    int index;
+    int right = 2;
+    int left;
+    int x = 0;
 		
-		int[] place = new int[cut]; 
-		int[][] cost = new int[cut][cut]; 
+    int[] place = new int[cut]; 
+    int[][] cost = new int[cut][cut]; 
 		
-		int x = 0;
-		
-		while(x < place.length) {
-			if (x == place.length - 1) {
-				place[x] = l;
-			}else if(x == 0) {
-				place[x] = 0;
-			}else {
-				place[x] = places[x - 1];
-			}
-			x++;
-		}
-		
-                while(right<cut){
-                	for (left = right - 2; 0 <= left; left--) {
-                		cost[left][right] = Integer.MAX_VALUE;
-				
-				index = left + 1;
-				
-				while(index < right) {
-					sum = cost[index][right] + cost[left][index];
-					
-					if (sum < cost[left][right])
-						cost[left][right] = sum;
-					
-					index++;
-				}
-				cost[left][right] = place[right] - place[left] + cost[left][right];
-                                
-                    }
-                        right++;
-		}
-		System.out.println("The minimum cutting is " + cost[0][cut - 1]);
+    while(x < place.length) 
+    {
+        if (x == place.length - 1) 
+        {
+            place[x] = l;
 	}
+        else if(x == 0) 
+        {
+            place[x] = 0;
+	}
+        else 
+        {
+            place[x] = places[x - 1];
+	}
+	x++;
+    }
+    
+    while(right<cut){
+        for (left = right - 2; 0 <= left; left--) {
+            cost[left][right] = Integer.MAX_VALUE;			
+            index = left + 1;
+            while(index < right) {
+                sum = cost[index][right] + cost[left][index];
+		if (sum < cost[left][right])
+                {
+                    cost[left][right] = sum;
+                    index++;
+		}
+                cost[left][right] = place[right] - place[left] + cost[left][right];
+                right++;
+            }
+            System.out.println("The minimum cutting is " + cost[0][cut - 1]);
+	}
+    }
+}
 
     public static void main(String[] args) {
         // TODO code application logic here
