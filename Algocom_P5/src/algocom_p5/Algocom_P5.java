@@ -150,32 +150,38 @@ public class Algocom_P5 {
 		int w;
 		int spend;
 		
-		int[][] Fun = new int[row][col];
+		int[][] fun = new int[row][col];
 				
-		int a = 0;
-		int b, d;
+		int x=0;
+                int y=1;
+                int z;
+                
+		//int b, d;
 		
-		while(a < n) {
-			temp = inputs[a + 1].split(" ");
+		while(x < n) {
+			temp = inputs[x + 1].split(" ");
 			partyList.add(new party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
 			
-			a++;
+			x++;
 		}
 		
-		for(b = 1; b < row; b++) {
-			for(d = 1; d < col; d++) {
-				w = d - partyList.get(b - 1).getFee();
+		//for(y = 1; y < row; y++) {
+                while(y<row){
+			for(z = 1; z < col; z++) {
+				w = z - partyList.get(y - 1).getFee();
 				
 				if(w > 0) {
-					Fun[b][d] = Math.max(Fun[b - 1][d], Fun[b - 1][w] + partyList.get(b - 1).getFun());
-				}else{
-					Fun[b][d] = Fun[b - 1][d];
+					fun[y][z] = Math.max(fun[y - 1][z], fun[y - 1][w] + partyList.get(y - 1).getFun());
+				}
+                                else{
+					fun[y][z] = fun[y - 1][z];
 				}
 			}
+                        y++;
 		}
 
-		spend = back(row - 1, col - 1, Fun, Fun[row - 1][col - 1], partyList);
-		System.out.print(spend + " " + Fun[row - 1][col - 1]);
+		spend = back(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
+		System.out.print(spend + " " + fun[row - 1][col - 1]);
 	}
 	
 //3
