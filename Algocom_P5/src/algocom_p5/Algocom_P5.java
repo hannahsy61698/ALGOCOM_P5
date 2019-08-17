@@ -24,17 +24,29 @@ public class Algocom_P5 {
         int numMatrix = Integer.parseInt(input[0]);
         String[] matrixName = new String[numMatrix];
         int[][] tableForPrinting;
-        
-        for(int i = 0; i < numMatrix; i++) {
-        	String[] inputSplitted = input[i+1].split(" ");
+        int i = 0;
+//        
+//        for(int i = 0; i < numMatrix; i++) {
+//        	String[] inputSplitted = input[i+1].split(" ");
+//        	matrixName[i] = inputSplitted[0];
+//        	
+//        	if(i == 0) 
+//        		matrixDimList.add(Integer.parseInt(inputSplitted[1]));
+//        		
+//        	matrixDimList.add(Integer.parseInt(inputSplitted[2]));
+//        }
+//        
+        while(i<numMatrix)
+        {
+            String[] inputSplitted = input[i+1].split(" ");
         	matrixName[i] = inputSplitted[0];
         	
         	if(i == 0) 
         		matrixDimList.add(Integer.parseInt(inputSplitted[1]));
         		
         	matrixDimList.add(Integer.parseInt(inputSplitted[2]));
+                i++;
         }
-        
         //Compute
         tableForPrinting = matrixChainMultiplication(matrixDimList, matrixDimList.size());
 
@@ -50,12 +62,10 @@ public class Algocom_P5 {
 		
 		else {
 			System.out.print("("); 
-			
 			printMatrixChainMultOrder(x, tableForPrinting[x][y], tableForPrinting, matrixName);
 			printMatrixChainMultOrder(tableForPrinting[x][y] + 1, y, tableForPrinting, matrixName);
-			
 			System.out.print(")");
-		}
+                     }
 	}
 
 
@@ -63,6 +73,7 @@ public class Algocom_P5 {
 		
 		int[][] tableM = new int[n][n]; //Table that will keep track of the minimum for DP.
 		int[][] tableS = new int[n][n]; //Table that will tell us what is the order.
+                int k =0;
 		
 		//If one matrix, it means there are no multiplication cost.
 		for(int i = 1; i < n; i++) {
@@ -76,25 +87,24 @@ public class Algocom_P5 {
 				
 				if(y != n) {
 					
-					//Take the min of all possible combination of number of cost
 					tableM[x][y] = Integer.MAX_VALUE;
-					for( int k = x ; k < y; k++) {
+					
+                                        k=x;
+                                        while(k<y)
+                                        {
+                                            int cost = tableM[x][k] + tableM[k + 1][y] + matrixDimList.get(x - 1) * matrixDimList.get(k) * matrixDimList.get(y);
 						
-						//The cost when multiplying two matrixes.
-						int cost = tableM[x][k] + 
-								   tableM[k + 1][y] + 
-								   matrixDimList.get(x - 1) * 
-								   matrixDimList.get(k) * 
-								   matrixDimList.get(y);
-						
-						if(cost < tableM[x][y]) {
-							tableM[x][y] = cost;
-							tableS[x][y] = k; //The partition on where the matrices where multiplied
-						}
-					}
+                                            if(cost < tableM[x][y]) {
+						tableM[x][y] = cost;
+						tableS[x][y] = k; 
+					         }
+                                        k++;
+                                       }
+                                      
+                                    }
 				}
 			}
-		}
+		
 		
 		return tableS;
 	}
