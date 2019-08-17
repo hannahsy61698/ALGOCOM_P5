@@ -140,30 +140,30 @@ public class Algocom_P5 {
 	public static void partyBudget(String[] inputs) {
 		ArrayList<party> partyList = new ArrayList<party>();
 		
-		String[] t = inputs[0].split(" ");
+		String[] temp = inputs[0].split(" ");
 		
-		int bud = Integer.parseInt(t[0]);
-		int p = Integer.parseInt(t[1]);
+		int budget = Integer.parseInt(temp[0]);
+		int n = Integer.parseInt(temp[1]);
 		
-		int r = p + 1;
-		int c = bud + 1;
+		int row = n + 1;
+		int col = budget + 1;
 		int w;
 		int spend;
 		
-		int[][] Fun = new int[r][c];
+		int[][] Fun = new int[row][col];
 				
 		int a = 0;
 		int b, d;
 		
-		while(a < p) {
-			t = inputs[a + 1].split(" ");
-			partyList.add(new party(Integer.parseInt(t[0]), Integer.parseInt(t[1])));
+		while(a < n) {
+			temp = inputs[a + 1].split(" ");
+			partyList.add(new party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
 			
 			a++;
 		}
 		
-		for(b = 1; b < r; b++) {
-			for(d = 1; d < c; d++) {
+		for(b = 1; b < row; b++) {
+			for(d = 1; d < col; d++) {
 				w = d - partyList.get(b - 1).getFee();
 				
 				if(w > 0) {
@@ -174,8 +174,8 @@ public class Algocom_P5 {
 			}
 		}
 
-		spend = back(r - 1, c - 1, Fun, Fun[r - 1][c - 1], partyList);
-		System.out.print(spend + " " + Fun[r - 1][c - 1]);
+		spend = back(row - 1, col - 1, Fun, Fun[row - 1][col - 1], partyList);
+		System.out.print(spend + " " + Fun[row - 1][col - 1]);
 	}
 	
 //3
@@ -225,10 +225,10 @@ public class Algocom_P5 {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        	String[] input = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
-		assignTable(input);
-		
-		System.out.println();
+//        	String[] input = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
+//		assignTable(input);
+//		
+//		System.out.println();
 				
 //		String[] s2 = {"5", "A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
 //		assignTable(s2);
@@ -236,8 +236,8 @@ public class Algocom_P5 {
 //		System.out.println();
 //		System.out.println();
 //				
-//		String[] pb = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
-//		partyBudget(pb);
+		String[] pb = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
+		partyBudget(pb);
 //		
 //		System.out.println();
 //			    
