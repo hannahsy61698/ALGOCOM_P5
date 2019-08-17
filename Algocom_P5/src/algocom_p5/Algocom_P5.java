@@ -60,12 +60,12 @@ public class Algocom_P5 {
 
 	private static int[][] matrixChainMultiplication(ArrayList<Integer> matrixDimList, int n) {
 		
-		int[][] tableM = new int[n][n]; 
-		int[][] tableS = new int[n][n]; 
+		int[][] M = new int[n][n]; 
+		int[][] S = new int[n][n]; 
                 int k =0;
 		
 		for(int i = 1; i < n; i++) {
-			tableM[i][i] = 0;
+			M[i][i] = 0;
 		}
 		
                 int subLen = 2;
@@ -78,16 +78,16 @@ public class Algocom_P5 {
 				
 				if(y != n) {
 					
-					tableM[x][y] = Integer.MAX_VALUE;
+					M[x][y] = Integer.MAX_VALUE;
 					
                                         k = x;
                                         while(k<y)
                                         {
-                                            int cost = tableM[x][k] + tableM[k + 1][y] + matrixDimList.get(x - 1) * matrixDimList.get(k) * matrixDimList.get(y);
+                                            int cost = M[x][k] + M[k + 1][y] + matrixDimList.get(x - 1) * matrixDimList.get(k) * matrixDimList.get(y);
 						
-                                            if(cost < tableM[x][y]) {
-						tableM[x][y] = cost;
-						tableS[x][y] = k; 
+                                            if(cost < M[x][y]) {
+						M[x][y] = cost;
+						S[x][y] = k; 
 					         }
                                         k++;
                                        }
@@ -99,7 +99,7 @@ public class Algocom_P5 {
 			}
 		
 		
-		return tableS;
+		return S;
 	}
 
 // 2
@@ -121,18 +121,18 @@ public class Algocom_P5 {
 		}
 	}
 	
-	private static int back(int r, int col, int[][] pa, int fun, ArrayList<party> pl) {
+	private static int backTracking(int row, int col, int[][] pa, int fun, ArrayList<party> pl) {
 		int spend = 0;
 		
-		while(r > 0 && fun > 0) {
+		while(row > 0 && fun > 0) {
 			if(fun > 0) {
-				if (pa[r - 1][col] != fun) {
-					fun = fun - pl.get(r - 1).getFun();
-					spend = spend + pl.get(r - 1).getFee();
-					col = col - pl.get(r - 1).getFee();
+				if (pa[row - 1][col] != fun) {
+					fun -= pl.get(row - 1).getFun();
+					spend += pl.get(row - 1).getFee();
+					col -= pl.get(row - 1).getFee();
 				}
 			}
-			r--;
+			row--;
 		}
 		return spend;
 	}
@@ -180,52 +180,54 @@ public class Algocom_P5 {
                         y++;
 		}
 
-		spend = back(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
+		spend = backTracking(row - 1, col - 1, fun, fun[row - 1][col - 1], partyList);
 		System.out.print(spend + " " + fun[row - 1][col - 1]);
 	}
 	
 //3
 	public static void cut(int l, int cuts, int[] places) {
-		int m = cuts + 2;
+		int cut = cuts + 2;
 		int sum;
-		int ci;
-		int rp;
-		int lp;
+		int index;
+		int right = 2;
+		int left;
 		
-		int[] p = new int[m]; 
-		int[][] cost = new int[m][m]; 
+		int[] place = new int[cut]; 
+		int[][] cost = new int[cut][cut]; 
 		
-		int a = 0;
+		int x = 0;
 		
-		while(a < p.length) {
-			if (a == p.length - 1) {
-				p[a] = l;
-			}else if(a == 0) {
-				p[a] = 0;
+		while(x < place.length) {
+			if (x == place.length - 1) {
+				place[x] = l;
+			}else if(x == 0) {
+				place[x] = 0;
 			}else {
-				p[a] = places[a - 1];
+				place[x] = places[x - 1];
 			}
-			a++;
+			x++;
 		}
 		
-		for (rp = 2; rp < m; rp++) {
-			for (lp = rp - 2; 0 <= lp; lp--) {
-				cost[lp][rp] = Integer.MAX_VALUE;
+                while(right<cut){
+                	for (left = right - 2; 0 <= left; left--) {
+                		cost[left][right] = Integer.MAX_VALUE;
 				
-				ci = lp + 1;
+				index = left + 1;
 				
-				while(ci < rp) {
-					sum = cost[ci][rp] + cost[lp][ci];
+				while(index < right) {
+					sum = cost[index][right] + cost[left][index];
 					
-					if (sum < cost[lp][rp])
-						cost[lp][rp] = sum;
+					if (sum < cost[left][right])
+						cost[left][right] = sum;
 					
-					ci++;
+					index++;
 				}
-				cost[lp][rp] = p[rp] - p[lp] + cost[lp][rp];
-			}
+				cost[left][right] = place[right] - place[left] + cost[left][right];
+                                
+                    }
+                        right++;
 		}
-		System.out.print("The minimum cutting is " + cost[0][m - 1]);
+		System.out.println("The minimum cutting is " + cost[0][cut - 1]);
 	}
 
     public static void main(String[] args) {
@@ -242,8 +244,8 @@ public class Algocom_P5 {
 //		System.out.println();
 //		System.out.println();
 //				
-		String[] pb = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
-		partyBudget(pb);
+//		String[] pb = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"}; 
+//		partyBudget(pb);
 //		
 //		System.out.println();
 //			    
@@ -253,8 +255,8 @@ public class Algocom_P5 {
 //		System.out.println();
 //		System.out.println();
 //				
-//		int[] c = {25, 50, 75};
-//		cut(100, c.length, c);
+		int[] c = {25, 50, 75};
+		cut(100, c.length, c);
 //		
 //		System.out.println();
 //		
